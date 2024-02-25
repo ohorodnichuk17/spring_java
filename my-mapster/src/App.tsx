@@ -3,7 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import DefaultLayout from "./containers/default/DefaultLayout.tsx";
 import CategoryListPage from "./category/list/CategoryListPage.tsx";
 import CategoryCreatePage from "./category/create/CategoryCreatePage.tsx";
-import CategoryUpdatePage from "./category/update/CategoryUpdatePage.tsx";
+import CategoryEditPage from "./category/edit/CategoryEditPage.tsx";
 
 function App() {
 
@@ -14,7 +14,7 @@ function App() {
                     <Route index element={<CategoryListPage/>}/>
                     <Route path={"category"}>
                         <Route path={"create"} element={<CategoryCreatePage/>}/>
-                        <Route path={"update/:id"} element={<CategoryUpdatePage />} />
+                        <Route path={"edit/:id"} element={<CategoryEditPage />} />
                     </Route>
                 </Route>
             </Routes>
