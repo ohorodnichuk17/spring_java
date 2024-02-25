@@ -46,45 +46,6 @@ public class CategoryController {
        }
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<CategoryItemDTO> update(@PathVariable Integer id, @ModelAttribute CategoryEditDTO dto) {
-//        try {
-//            Optional<CategoryEntity> optionalCategory = categoryRepository.findById(id);
-//            if (!optionalCategory.isPresent()) {
-//                return ResponseEntity.notFound().build();
-//            }
-//            CategoryEntity entity = optionalCategory.get();
-//            if (dto.getName() != null) {
-//                entity.setName(dto.getName());
-//            }
-//            if (dto.getDescription() != null) {
-//                entity.setDescription(dto.getDescription());
-//            }
-//            if (dto.getFile() != null) {
-//                String image = storageService.saveImage(dto.getFile(), FileSaveFormat.JPG);
-//                entity.setImage(image);
-//            }
-//            categoryRepository.save(entity);
-//            return ResponseEntity.ok(categoryMapper.categoryItemDTO(entity));
-//        } catch (Exception ex) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-//        try {
-//            Optional<CategoryEntity> optionalCategory = categoryRepository.findById(id);
-//            if (!optionalCategory.isPresent()) {
-//                return ResponseEntity.notFound().build();
-//            }
-//            categoryRepository.deleteById(id);
-//            return ResponseEntity.noContent().build();
-//        } catch (Exception ex) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
-
     @GetMapping("/{categoryId}")
     public ResponseEntity<CategoryItemDTO> getById(@PathVariable int categoryId) {
         var entity = categoryRepository.findById(categoryId).orElse(null);
@@ -142,6 +103,22 @@ public class CategoryController {
     public ResponseEntity<Page<CategoryItemDTO>> searchByName(@RequestParam(required = false) String name,
                                                               Pageable pageable) {
         Page<CategoryEntity> categories = categoryRepository.findByNameContainingIgnoreCase(name, pageable);
+        Page<CategoryItemDTO> result = categories.map(categoryMapper::categoryItemDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/searchByDesc")
+    public ResponseEntity<Page<CategoryItemDTO>> searchByDescription(@RequestParam(required = false) String description,
+                                                              Pageable pageable) {
+        Page<CategoryEntity> categories = categoryRepository.findByDescriptionContainingIgnoreCase(description, pageable);
+        Page<CategoryItemDTO> result = categories.map(categoryMapper::categoryItemDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/searchById")
+    public ResponseEntity<Page<CategoryItemDTO>> searchById(@RequestParam(required = false) int id,
+                                                                     Pageable pageable) {
+        Page<CategoryEntity> categories = categoryRepository.findByIdContainingIgnoreCase(id, pageable);
         Page<CategoryItemDTO> result = categories.map(categoryMapper::categoryItemDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
