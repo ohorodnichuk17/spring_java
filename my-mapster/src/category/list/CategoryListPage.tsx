@@ -1,7 +1,7 @@
 import {Button, Col, Pagination, Row} from "antd";
 import {Link, useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {ICategoryItem, ICategorySearch, IGetCategories} from "./types.ts";
+import {ICategorySearch, IGetCategories} from "./types.ts";
 import http_common from "../../http_common.ts";
 import CategoryCard from "./CategoryCard.tsx";
 
